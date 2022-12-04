@@ -1,0 +1,15 @@
+{
+  "name": "com.ewen.com.third-person-controller",
+  "version": "1.0.0",
+  "displayName": "Third Person Controller",
+  "description": "Base third person controller.",
+  "unity": "2021.3",
+  "dependencies": {
+    "com.unity.inputsystem": "1.4.4"
+  },
+  "author": {
+    "name": "Ewen Cossec",
+    "email": "cossec.ewen@gmail.com",
+    "url": "https://github.com/EwenCsc"
+  }
+}

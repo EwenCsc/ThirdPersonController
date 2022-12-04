@@ -1,5 +1,5 @@
 {
-  "name": "com.ewen.com.ewengine.third-person-controller",
+  "name": "com.ewengine.third-person-controller",
   "version": "1.0.0",
   "displayName": "Third Person Controller",
   "description": "Base third person controller.",

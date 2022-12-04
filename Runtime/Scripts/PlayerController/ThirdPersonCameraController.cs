@@ -7,7 +7,7 @@ namespace Ewengine.ThirdPersonController
 	{
 		#region Fields
 		#region Serialized Fields
-		[SerializeField] private ThirdPersonCharacterController _characterController = null;
+		[SerializeField] private ThirdPersonCharacterPlayerController _controller = null;
 		[SerializeField] private Transform _followedTransform = null;
 
 		[SerializeField][Range(1.0f, 10.0f)] private float _sensibility = 5.0f;
@@ -30,7 +30,7 @@ namespace Ewengine.ThirdPersonController
 		#region Methods
 		private void Update()
 		{
-			InputAction lookAction = _characterController.LookAction;
+			InputAction lookAction = _controller.LookAction;
 			Vector2 lookInput = lookAction.ReadValue<Vector2>();
 
 			_yaw += lookInput.x * _sensibility;

@@ -2,10 +2,10 @@
 {
 	using UnityEngine;
 
-	public class ThirdPersonCharacterAnimator : MonoBehaviour
+	public class CharacterAnimator : MonoBehaviour
 	{
 		#region Fields
-		[SerializeField] private ThirdPersonCharacterController _characterController = null;
+		[SerializeField] private Character _character = null;
 
 		[SerializeField] private Animator _animator = null;
 
@@ -18,18 +18,18 @@
 		#region Methods
 		private void LateUpdate()
 		{
-			Transform characterTransform = _characterController.transform;
-			Vector3 velocity = _characterController.Rigidbody.velocity.normalized;
+			Transform characterTransform = _character.transform;
+			Vector3 velocity = _character.Rigidbody.velocity.normalized;
 
 			_animator.SetFloat(_forwardVelocityParameter, Vector3.Dot(characterTransform.forward, velocity));
 			_animator.SetFloat(_rightdVelocityParameter, Vector3.Dot(characterTransform.right, velocity));
 
-			if (_characterController.IsJumping)
+			if (_character.IsJumping)
 			{
 				_animator.SetTrigger(_isJumpingParameter);
 			}
 
-			_animator.SetBool(_isGroundedParameter, _characterController.IsGrounded());
+			_animator.SetBool(_isGroundedParameter, _character.IsGrounded());
 		}
 		#endregion Methods
 	}

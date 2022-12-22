@@ -178,43 +178,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _controller: {fileID: 274050180}
-  _followedTransform: {fileID: 6305133889677030067}
+  _camera: {fileID: 3853216701902583087}
+  _origin: {fileID: 6305133889677030067}
+  _hotspots:
+  - {fileID: 11400000, guid: 5bc270deb237afe449b2e9123d0ecf82, type: 2}
+  - {fileID: 11400000, guid: f3cd4e8535d466c45915fb783dcbfdd2, type: 2}
   _sensibility: 1
-  _distanceToOrigin: 5
   _pitchMinMax: {x: -70, y: 70}
-  _pitchAcceleration:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0.5
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.15258214
-    - serializedVersion: 3
-      time: 0.5
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0.5
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
   _rotationSmoothTime: 0.1
 --- !u!1001 &3468799416107518758
 PrefabInstance:

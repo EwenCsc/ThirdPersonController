@@ -1,81 +1,70 @@
 ﻿namespace Ewengine.ThirdPersonController
 {
+	using System;
 	using UnityEngine;
 	using UnityEngine.InputSystem;
 
 	public class ThirdPersonCharacterPlayerController : MonoBehaviour
 	{
-		#region Constants
-		private const string MOVE_ACTION_KEY = "Move";
-		private const string LOOK_ACTION_KEY = "Look";
-		private const string FIRE_ACTION_KEY = "Interact";
-		private const string JUMP_ACTION_KEY = "Jump";
-		#endregion Constants
+		#region Enum
+		private enum State
+		{
+			Invalid,
+			Normal,
+			Talking,
+		}
+		#endregion Enum
 
 		#region Fields
-		#region Serialize Fields
 		[Header("Components")]
 		[SerializeField] private Character _character = null;
 		[SerializeField] private ThirdPersonCameraController _camera = null;
 		[SerializeField] private PlayerInput _playerInput = null;
-		#endregion Serialize Fields
 
-		#region Internal Fields
-		private InputActionMap _inputActionMap = null;
-
-		private InputAction _moveAction = null;
-		private InputAction _lookAction = null;
-		private InputAction _interactAction = null;
-		private InputAction _jumpAction = null;
-		#endregion Internal Fields
+		private PlayerInputsHandler _playerInputsHandler = null;
 		#endregion Fields
 
 		#region Properties
-		public InputAction MoveAction { get => _moveAction; }
-		public InputAction LookAction { get => _lookAction; }
-		public InputAction FireAction { get => _interactAction; }
-		public InputAction JumpAction { get => _jumpAction; }
+		public PlayerInputsHandler PlayerInputsHandler { get => _playerInputsHandler; }
 		#endregion Properties
 
 		#region Methods
 		#region MonoBehaviour
-		private void OnEnable()
+		private void OnDestroy()
 		{
-			_inputActionMap = _playerInput.currentActionMap;
+			if (_playerInputsHandler != null)
+			{
+				_playerInputsHandler.Jumped -= JumpRequested;
+				_playerInputsHandler.Interacted -= InteractRequested;
 
-			_moveAction = _inputActionMap.FindAction(MOVE_ACTION_KEY, true);
-			_lookAction = _inputActionMap.FindAction(LOOK_ACTION_KEY, true);
-			_interactAction = _inputActionMap.FindAction(FIRE_ACTION_KEY, true);
-			_jumpAction = _inputActionMap.FindAction(JUMP_ACTION_KEY, true);
-
-			_jumpAction.started += OnJumpRequested;
+				_playerInputsHandler.Dispose();
+				_playerInputsHandler = null;
+			}
 		}
 
-		private void OnDisable()
+		private void Start()
 		{
-			_inputActionMap = null;
-
-			_moveAction = null;
-			_lookAction = null;
-			_interactAction = null;
-
-			if (_jumpAction != null)
-			{
-				_jumpAction.started -= OnJumpRequested;
-				_jumpAction = null;
-			}
+			_playerInputsHandler = new PlayerInputsHandler(_playerInput);
+			_playerInputsHandler.Jumped += JumpRequested;
+			_playerInputsHandler.Interacted += InteractRequested;
 		}
 
 		private void Update()
 		{
-			_character.ComputeMovement(_moveAction.ReadValue<Vector2>(), _camera.transform.eulerAngles.y);
+			_playerInputsHandler.Update();
+			_character.ComputeMovement(_playerInputsHandler.MoveInputValue, _camera.transform.eulerAngles.y);
 		}
 		#endregion MonoBehaviour
 
 		#region Callbacks
-		private void OnJumpRequested(InputAction.CallbackContext callbackContext)
+		private void JumpRequested()
 		{
 			_character.RequestJump();
+		}
+
+		private void InteractRequested()
+		{
+			Debug.Log("Interact");
 		}
 		#endregion Callbacks
 		#endregion Methods

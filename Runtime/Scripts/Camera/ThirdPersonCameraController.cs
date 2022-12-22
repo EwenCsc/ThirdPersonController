@@ -24,35 +24,28 @@ namespace Ewengine.ThirdPersonController
 
 		#region Internal Fields
 		private int _currentHotspotsIndex = 0;
-		private CameraHotspot _currentHotspot = default;
+		private CameraHotspot _currentHotspot = null;
 
 		private float _yaw = 0.0f;
 		private float _pitch = 0.0f;
 		private Vector3 _currentRotation = Vector3.zero;
 		private Vector3 _rotationSmoothDamp = Vector3.zero;
-
-		private bool _locked = false;
 		#endregion Internal Fields
 		#endregion Fields
 
 		#region Methods
-		private void OnEnable()
+		private void Start()
 		{
 			_currentHotspot = _hotspots[_currentHotspotsIndex];
 		}
 
-		private void OnDisable()
+		private void OnDestroy()
 		{
 			_currentHotspot = null;
 		}
 
 		private void Update()
 		{
-			if (Input.GetKeyDown(KeyCode.X))
-			{
-				_locked = _locked == false;
-			}
-
 			if (Input.GetKeyDown(KeyCode.A))
 			{
 				_currentHotspotsIndex = Mathf.Abs((_currentHotspotsIndex - 1)) % _hotspots.Count;
@@ -69,9 +62,7 @@ namespace Ewengine.ThirdPersonController
 
 		private void ComputeCamera()
 		{
-			InputAction lookAction = _controller.LookAction;
-
-			Vector2 lookInput = _locked ? Vector2.zero : lookAction.ReadValue<Vector2>();
+			Vector2 lookInput = _controller.PlayerInputsHandler.LookInputValue;
 
 			_yaw += lookInput.x * _sensibility;
 			_pitch = Mathf.Clamp(_pitch - lookInput.y * _sensibility, _pitchMinMax.x, _pitchMinMax.y);
